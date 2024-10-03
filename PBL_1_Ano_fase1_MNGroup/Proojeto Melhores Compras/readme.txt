@@ -1,0 +1,1 @@
+O arquivo "Evidencia_Teste_Melhores_Compras" foi gerado a partir da ferramenta Oracle SQL Developer Versão 12c com o acesso: RM559962.
