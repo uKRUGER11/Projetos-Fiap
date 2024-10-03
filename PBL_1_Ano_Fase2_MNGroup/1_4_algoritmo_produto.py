@@ -1,0 +1,1 @@
+# Lembrar de criar uma linha de comando que crie o arquivo CSV: Ele deve se chamar: 1_5_arquivo_produto.csv
