@@ -1,12 +1,13 @@
-UPDATE mc_funcionario SET cd_gerente = null;
-DELETE FROM mc_cliente ;
-COMMIT
+UPDATE mc_produto SET VL_PERC_LUCRO = 0.3;
+DELETE FROM mc_produto ;
+
 -- Commandos DQL
+
 -- Retorna todos os registros de uma tabela
 select 
     * 
 from 
-    mc_cliente
+    mc_categoria_prod;
 
 -- Retorna o nome e valor do salario de um funcionário específico  
 select 
@@ -27,7 +28,7 @@ FROM
          mc_logradouro l
     INNER JOIN mc_bairro b ON ( l.cd_bairro = b.cd_bairro )
     INNER JOIN mc_cidade c ON ( b.cd_cidade = c.cd_cidade )
-    INNER JOIN mc_estado e ON ( c.sg_estado = e.sg_estado )
+    INNER JOIN mc_estado e ON ( c.sg_estado = e.sg_estado );
 
 -- Query abaixo retorna a quantidade de cada registro único nas tabelas logradouro, bairro, cidade, estado
 SELECT
@@ -39,5 +40,16 @@ FROM
     mc_logradouro l
     LEFT JOIN mc_bairro     b ON ( l.cd_bairro = b.cd_bairro )
     LEFT JOIN mc_cidade     c ON ( b.cd_cidade = c.cd_cidade )
-    LEFT JOIN mc_estado     e ON ( c.sg_estado = e.sg_estado )
-
+    LEFT JOIN mc_estado     e ON ( c.sg_estado = e.sg_estado );
+    
+    
+-- Query abaixo retorna o nome do produto, codigo da categoria e nome a categoria. Por ser um RIGHT JOIN, temos os dados de categoria que nao possuem nenhuma associação com produto.
+SELECT
+    p.ds_produto,
+    p.vl_perc_lucro,
+    c.cd_categoria,
+    c.ds_categoria
+FROM 
+    mc_produto p
+RIGHT
+    JOIN mc_categoria_prod c ON (p.cd_categoria = c.cd_categoria);

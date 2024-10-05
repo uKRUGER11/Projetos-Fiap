@@ -605,7 +605,289 @@ insert
         null 
     );   
     
--- até a letra e
+-- f) Cadastre um novo cliente que ja tenha um mesmo loguin já criado. Foi possível incluir esse novo cliente? Explique:
+insert 
+    into mc_cliente (
+        nr_cliente,
+        nm_cliente,
+        qt_estrelas,
+        vl_medio_compra,
+        st_cliente,
+        ds_email,
+        nr_telefone,
+        nm_login,
+        ds_senha
+    ) 
+    values (
+        2107,
+        'Victor SantosMacedo',
+        4,
+        19000.23,
+        'A',
+        'victor_maceds@gmail.com',
+        '11-90807-2345',
+        'victosmad12',
+        '12345678'
+    );
+-- Output: ORA-00001: restrição exclusiva (RM559962.UK_MC_CLIENTE_MM_LOGIN) violada
+-- R: O banco de dados não permite pois há uma restrição exclusiva do campo de login, no qual cada login deve ser único no sistema.
+
+
+-- g) Inserindo categorias de produto: Eletrônicos (2101), Esporte e Lazer (2102), Pet Shop (2103)
+insert
+    into mc_categoria_prod (
+        cd_categoria,
+        tp_categoria,
+        ds_categoria,
+        dt_inicio,
+        dt_termino,
+        st_categoria
+    )
+    values (
+        2101,
+        'P',
+        'Eletrônicos',
+        TO_DATE('01-01-2010', 'DD-MM-YYYY'),
+        null,
+        'A'
+    );
+
+insert
+    into mc_categoria_prod (
+        cd_categoria,
+        tp_categoria,
+        ds_categoria,
+        dt_inicio,
+        dt_termino,
+        st_categoria
+    )
+    values (
+        2102,
+        'P',
+        'Esporte e Lazer',
+        TO_DATE('01-01-2010', 'DD-MM-YYYY'),
+        null,
+        'A'
+    );
+
+insert
+    into mc_categoria_prod (
+        cd_categoria,
+        tp_categoria,
+        ds_categoria,
+        dt_inicio,
+        dt_termino,
+        st_categoria
+    )
+    values (
+        2103,
+        'P',
+        'Pet Shop',
+        null,
+        null,
+        'A'
+    );
+
+-- h) Inserindo 5 produtos e associe as categorias adequadas ao produto
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    1,
+    2101,
+    7891234567890,
+    'Fone de Ouvido Bluetooth',
+    199.90,
+    'Caixa',
+    'A',
+    0.4,
+    'Fone de ouvido Bluetooth com cancelamento de ruído e controle de toque'
+);
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    2,
+    2101,
+    7891234567891,
+    'Smartwatch Fitness',
+    399.90,
+    'Caixa',
+    'A',
+    0.5,
+    'Smartwatch com monitoramento de frequência cardíaca e GPS integrado.'
+);
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    3,
+    2102,
+    7891234567892,
+    'Bicicleta Mountain Bike',
+    1299.90,
+    'Montada',
+    'A',
+    0.35,
+    'Bicicleta com quadro em alumínio, suspensão dianteira e 21 marchas.'
+);
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    4,
+    2102,
+    7891234567893,
+    'Bola de Futebol',
+    79.90,
+    'Saco plástico',
+    'A',
+    0.25,
+    'Bola oficial, feita de material resistente com costura à mão.'
+);
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    5,
+    2103,
+    7891234567894,
+    'Ração Premium para Cães',
+    249.90,
+    'Saco de 15kg',
+    'A',
+    0.3,
+    'Ração enriquecida com vitaminas e minerais essenciais para cães.'
+);
+
+INSERT INTO mc_produto (
+    cd_produto,
+    cd_categoria,
+    nr_cd_barras_prod,
+    ds_produto,
+    vl_unitario,
+    tp_embalagem,
+    st_produto,
+    vl_perc_lucro,
+    ds_completa_prod
+) VALUES (
+    6,
+    2103,
+    7891234567895,
+    'Brinquedo Interativo para Cães',
+    89.90,
+    'Caixa',
+    'A',
+    0.3,
+    'Brinquedo interativo que estimula a mente do seu cão e o mantém ativo.'
+);
+
+-- i) Cadastre pelo menos 2 categorias para os vídeos: Instalaçao do Produto (2104), Uso no Cotidiano (2105), Review do produto (2106), Publicidade de Produto (2107)
+INSERT INTO mc_categoria_prod (
+    cd_categoria,
+    tp_categoria,
+    ds_categoria,
+    dt_inicio,
+    dt_termino,
+    st_categoria
+) VALUES (
+    2104,
+    'V',
+    'Instalação do Produto',
+    TO_DATE('01-01-2024', 'DD-MM-YYYY'),
+    NULL,
+    'A'
+);
+
+INSERT INTO mc_categoria_prod (
+    cd_categoria,
+    tp_categoria,
+    ds_categoria,
+    dt_inicio,
+    dt_termino,
+    st_categoria
+) VALUES (
+    2105,
+    'V',
+    'Uso no Cotidiano',
+    TO_DATE('01-01-2024', 'DD-MM-YYYY'),
+    NULL,
+    'A'
+);
+
+INSERT INTO mc_categoria_prod (
+    cd_categoria,
+    tp_categoria,
+    ds_categoria,
+    dt_inicio,
+    dt_termino,
+    st_categoria
+) VALUES (
+    2106,
+    'V',
+    'Review do Produto',
+    TO_DATE('01-01-2024', 'DD-MM-YYYY'),
+    NULL,
+    'A'
+);
+
+INSERT INTO mc_categoria_prod (
+    cd_categoria,
+    tp_categoria,
+    ds_categoria,
+    dt_inicio,
+    dt_termino,
+    st_categoria
+) VALUES (
+    2107,
+    'V',
+    'Publicidade de Produto',
+    TO_DATE('01-01-2024', 'DD-MM-YYYY'),
+    NULL,
+    'A'
+);
+
+
 COMMIT    
 
 
