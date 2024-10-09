@@ -7,7 +7,7 @@ DELETE FROM mc_produto ;
 select 
     * 
 from 
-    mc_categoria_prod;
+    mc_cliente;
 
 -- Retorna o nome e valor do salario de um funcionário específico  
 select 
@@ -20,6 +20,7 @@ WHERE
 
 -- Query abaixo retorna todos os endereços cadastrados
 SELECT
+    l.cd_logradouro,
     l.nm_logradouro,
     b.nm_bairro,
     c.nm_cidade,
