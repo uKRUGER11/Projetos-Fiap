@@ -20,7 +20,7 @@ WHERE
 
 -- Query abaixo retorna todos os endereços cadastrados
 SELECT
-    l.cd_logradouro,
+    l.cd_logradouro,ss
     l.nm_logradouro,
     b.nm_bairro,
     c.nm_cidade,
