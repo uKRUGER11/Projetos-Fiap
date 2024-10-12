@@ -2,7 +2,7 @@
 
 /*
 NOTAS: 
-- Erro Intencional nas linhas 516, 564 e 573.
+- Erro Intencional nas linhas 532, 582 e 591.
 */
 
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('Comercial', 'A');
