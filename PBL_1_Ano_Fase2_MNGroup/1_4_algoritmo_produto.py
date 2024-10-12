@@ -1,24 +1,46 @@
-# Lembrar de criar uma linha de comando que crie o arquivo JSON: Ele deve se chamar: 1_5_arquivo_produto.json
-
+# A)
 import json
 
-# Lambda para calcular valor do ICMS
-calcula_icms = lambda valor: valor * 0.18
+# B)
+calcula_icms = lambda valor : valor * 0.18
+
+# D)
+class ValorNaoNumericoError(Exception):
+    def __init__(self, message="Digite um valor válido\n"):
+        super().__init__(message)
+
+# D)
+class ValorNegativoError(Exception):
+    def __init__(self, message="O valor não pode ser negativo ou zero.\n"):
+        super().__init__(message)
 
 # Função que cadastro um produto e retorna um dicionário
 def cadastrar_produto():
-    descricao = input("Digite a descrição do produto: ")
     while True:
         try:
+            descricao = input("Digite a descrição do produto: ").strip()
+            if not descricao or any(char.isdigit() for char in descricao):
+                raise ValorNaoNumericoError()  
+
             valor = float(input("Digite o valor do produto: "))
+            if valor <= 0 and str(valor):
+                raise ValorNegativoError()  
+ 
+            # Validação da embalagem
+            embalagem = input("Digite o tipo de embalagem do produto: ").strip()
+            if not embalagem or any(char.isdigit() for char in embalagem):
+                raise ValorNaoNumericoError()  
             break
         except ValueError:
-            print("Por favor, insira um valor numérico válido.")
-    
-    embalagem = input("Digite o tipo de embalagem do produto: ")
+            print("Digite um valor válido\n") 
+        except ValorNaoNumericoError as e:  
+            print(e) 
+        except ValorNegativoError as e:
+            print(e)  
 
     icms = calcula_icms(valor)
     
+    # Retorno do dicionário
     return {
         "descricao": descricao,
         "valor": valor,
@@ -29,17 +51,20 @@ def cadastrar_produto():
 # Criação de uma lista para guardar os dicionários de produtos
 produtos = []
 
-# Loop para garantir que seja inserido no mínimo 5 produtos
+# C)
 while True:
+    # Adiciona produtos até o usuário dizer 'não'
     produtos.append(cadastrar_produto())
     continuar = input("Deseja cadastrar um novo produto? (sim/não): ").lower()
     if continuar != 'sim':
         break
 
-# Validação para criação de arquivo JSON
+# E)
 if len(produtos) < 5:
+    # Validação que garante o cadastro de no mínimo 5 produtos
     print("Você precisa cadastrar no mínimo 5 produtos.")
 else:
+    # Criação do arquivo .json
     with open("1_5_arquivo_produto.json", "w") as file:
         json.dump(produtos, file, indent=4)
     print("Arquivo JSON criado com sucesso!")
