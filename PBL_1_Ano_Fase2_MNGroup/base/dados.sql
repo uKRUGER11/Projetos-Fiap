@@ -337,6 +337,8 @@ INSERT INTO MC_SGV_PRODUTO_VIDEO(
     )
 VALUES(3, 2, 5, null, 'mpeg4', 'https://drive.google.com/drive/folders/1PUCWIQA7qOFJPPvv/usomarchas.mpeg4','A');
 
+
+
 -- A) Cadastre no mï¿½nimo 1 CLIENTE PESSOA JURIDICA e 1 CLIENTE PESSOA FISICA (...)
 
 -- Clientes
@@ -361,6 +363,7 @@ insert
         'luizisxt092',
         'senha123'
     );
+-- 1 linha inserido.
 
 insert 
     into mc_cliente (
@@ -384,6 +387,7 @@ insert
         'victosmad12',
         '123senha'
     );
+-- 1 linha inserido.
 
 insert 
     into mc_cliente (
@@ -407,6 +411,7 @@ insert
         'kruger219038',
         'sen123ha'
     );
+-- 1 linha inserido.
 
 -- Cliente pessoa fisica
 
@@ -425,7 +430,8 @@ insert
         null,
         12312345627       
     );
- 
+ -- 1 linha inserido.
+
 insert 
     into mc_cli_fisica (
        nr_cliente, 
@@ -441,6 +447,7 @@ insert
         'Homem Cisgï¿½nero',
         56789012345       
     );
+-- 1 linha inserido.
 
 -- Cliente pessoa jurï¿½dica
 
@@ -457,6 +464,7 @@ insert
         01410663000147,
         null 
     );  
+-- 1 linha inserido.
 
 
 -- A) (...) A partir dos dados cadastrados nas tabelas estado, cidade e bairro, cadastre no mï¿½nimo 1 endereï¿½o para cada cliente.
@@ -479,6 +487,7 @@ insert into mc_end_cli (
     null,
     'A'
 );
+-- 1 linha inserido.
 
 insert into mc_end_cli (
     nr_cliente,
@@ -497,6 +506,7 @@ insert into mc_end_cli (
     null,
     'A'
 );
+-- 1 linha inserido.
 
 insert into mc_end_cli (
     nr_cliente,
@@ -515,6 +525,7 @@ insert into mc_end_cli (
     to_date('14-01-2024', 'DD-MM-YYYY'),
     'I'
 );
+-- 1 linha inserido.
 
 
 -- B) Cadastre um novo cliente que ja tenha um mesmo loguin jï¿½ criado. Foi possï¿½vel incluir esse novo cliente? Explique:
@@ -553,17 +564,19 @@ SET
     vl_salario = vl_salario * 1.12
 WHERE
     cd_funcionario = 3; 
+-- 1 linha inserido.
 
 -- d)selecione um endereço de cliente e coloque o status como I(nativo) e preencha a data de término como sendo a data 
--- limite de entrega dotrabalho na plataforma da Fiap. Utilize a funçao to_date para registrar esse novo valor de data.
+-- limite de entrega do trabalho (14 de outubro de 2024) na plataforma da Fiap. Utilize a funçao to_date para registrar esse novo valor de data.
 
--- Define o status como Inativo e data de término para 14 de outubro de 2024
+-- Define o status como Inativo e data de término para 
 UPDATE mc_end_cli
 SET
     st_end = 'I',
     dt_termino = TO_DATE('2024-10-24', 'YYYY-MM-DD')
 WHERE
     nr_cliente = 2;  
+-- 1 linha inserido.
 
 -- e) Tende eliminar um estado que tenha uma cidade cadastrada. Isso foi possível? Explique.
 DELETE 
