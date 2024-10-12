@@ -1,5 +1,10 @@
 --Inserindo registros na tabela mc_depto
 
+/*
+NOTAS: 
+- Erro Intencional nas linhas 516, 564 e 573.
+*/
+
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('Comercial', 'A');
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('Financeiro', 'A');
 INSERT INTO MC_DEPTO (NM_DEPTO, ST_DEPTO) VALUES('SAC', 'A');
@@ -332,7 +337,7 @@ INSERT INTO MC_SGV_PRODUTO_VIDEO(
     )
 VALUES(3, 2, 5, null, 'mpeg4', 'https://drive.google.com/drive/folders/1PUCWIQA7qOFJPPvv/usomarchas.mpeg4','A');
 
--- A) Cadastre no mínimo 1 CLIENTE PESSOA JURIDICA e 1 CLIENTE PESSOA FISICA (...)
+-- A) Cadastre no mï¿½nimo 1 CLIENTE PESSOA JURIDICA e 1 CLIENTE PESSOA FISICA (...)
 
 -- Clientes
 insert 
@@ -433,11 +438,11 @@ insert
         2,
         TO_DATE('06-06-2005', 'DD-MM-YYYY'),
         'M',
-        'Homem Cisgênero',
+        'Homem Cisgï¿½nero',
         56789012345       
     );
 
--- Cliente pessoa jurídica
+-- Cliente pessoa jurï¿½dica
 
 insert 
     into mc_cli_juridica (
@@ -452,8 +457,10 @@ insert
         01410663000147,
         null 
     );  
- 
--- A) (...) A partir dos dados cadastrados nas tabelas estado, cidade e bairro, cadastre no mínimo 1 endereço para cada cliente.
+
+
+-- A) (...) A partir dos dados cadastrados nas tabelas estado, cidade e bairro, cadastre no mï¿½nimo 1 endereï¿½o para cada cliente.
+
 
 insert into mc_end_cli (
     nr_cliente,
@@ -467,7 +474,7 @@ insert into mc_end_cli (
     1,
     2,
     575,
-    'Próximo à igreja e da loja de convêniencia do paulo',
+    'Prï¿½ximo ï¿½ igreja e da loja de convï¿½niencia do paulo',
     to_date('09-01-2016', 'DD-MM-YYYY'),
     null,
     'A'
@@ -482,12 +489,12 @@ insert into mc_end_cli (
     dt_termino,
     st_end
 ) values (
-    3,
+    2,
     7,
     23,
-    'Condomínio Videiras Bloco 42, Apt_a23',
+    'Condomï¿½nio Videiras Bloco 42, Apt_a23',
     to_date('09-01-2012', 'DD-MM-YYYY'),
-    to_date('24-12-2015', 'DD-MM-YYYY'),
+    null,
     'A'
 );
 
@@ -503,14 +510,14 @@ insert into mc_end_cli (
     3,
     8,
     1100,
-    'há dois quarteirões do MC Donalds',
+    'hï¿½ dois quarteirï¿½es do MC Donalds',
     to_date('02-07-2022', 'DD-MM-YYYY'),
     to_date('14-01-2024', 'DD-MM-YYYY'),
     'I'
 );
 
 
--- B) Cadastre um novo cliente que ja tenha um mesmo loguin já criado. Foi possível incluir esse novo cliente? Explique:
+-- B) Cadastre um novo cliente que ja tenha um mesmo loguin jï¿½ criado. Foi possï¿½vel incluir esse novo cliente? Explique:
 insert into mc_cliente (
     nm_cliente,
     qt_estrelas,
@@ -530,8 +537,54 @@ insert into mc_cliente (
     'victosmad12',
     '12345678'
 );
--- Output: ORA-00001: restrição exclusiva (RM559962.UK_MC_CLIENTE_MM_LOGIN) violada
--- R: O banco de dados não permite pois há uma restrição exclusiva do campo de login, no qual cada login deve ser único no sistema.
+-- Output: ORA-00001: restriï¿½ï¿½o exclusiva (RM559962.UK_MC_CLIENTE_MM_LOGIN) violada
+-- R: O banco de dados nï¿½o permite pois hï¿½ uma restriï¿½ï¿½o exclusiva do campo de login, no qual cada login deve ser ï¿½nico no sistema.
+
+
+-- ALTERAÇÃO DE DADOS
+
+-- c) Selecione um específico funcionário e atualize o Cargo e aplique 12% de aumento de salário
+
+-- Atualiza o cargo para o vendedor III e Aplica a atualizaÃ§Ã£o para o funcionÃ¡rio com ID 3
+
+UPDATE mc_funcionario
+SET
+    ds_cargo = 'Vendedor(a) III',
+    vl_salario = vl_salario * 1.12
+WHERE
+    cd_funcionario = 3; 
+
+-- d)selecione um endereço de cliente e coloque o status como I(nativo) e preencha a data de término como sendo a data 
+-- limite de entrega dotrabalho na plataforma da Fiap. Utilize a funçao to_date para registrar esse novo valor de data.
+
+-- Define o status como Inativo e data de término para 14 de outubro de 2024
+UPDATE mc_end_cli
+SET
+    st_end = 'I',
+    dt_termino = TO_DATE('2024-10-24', 'YYYY-MM-DD')
+WHERE
+    nr_cliente = 2;  
+
+-- e) Tende eliminar um estado que tenha uma cidade cadastrada. Isso foi possível? Explique.
+DELETE 
+FROM mc_estado
+WHERE
+    sg_estado = 'SP';
+-- Output: ORA-02292: restrição de integridade (RM559962.FK_MC_CIDADE_ESTADO) violada - registro filho localizado
+-- R: Não é possível excluír um registro em que sua chave primária esteja associada a uma chave estrangeira em outra tabela, por conta da restrição de integridade imposta pelo banco.
+
+
+-- f) selecione um produto e tente atualizar o status do produto com o status x. Isso foi possível? justifique o motivo.
+UPDATE mc_produto
+SET
+    st_produto = 'X'
+WHERE
+    cd_produto = 3;
+-- Output: ORA-02290: restrição de verificação (RM559962.MC_PRODUTO_CK_ST_PROD) violada
+-- R) Não é possível atualizar o status para "X" pois uma restrição conteúdo foi imposta ao campo st_produto, no qual é aceito apenas "A" de ativ e "I" de inativo.
+
+-- g) Confirme todas as transações pendentes
+COMMIT;
 
 
 --Inserindo registros na tabela mc_sgv_visualizacao_video

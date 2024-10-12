@@ -7,7 +7,7 @@ DELETE FROM mc_produto ;
 select 
     * 
 from 
-    mc_cliente;
+    mc_estado;
 
 -- Retorna o nome e valor do salario de um funcionário específico  
 select 
@@ -46,6 +46,7 @@ FROM
     
 -- Query abaixo retorna o nome do produto, codigo da categoria e nome a categoria. Por ser um RIGHT JOIN, temos os dados de categoria que nao possuem nenhuma associação com produto.
 SELECT
+    p.cd_produto,
     p.ds_produto,
     p.vl_perc_lucro,
     c.cd_categoria,
@@ -54,3 +55,27 @@ FROM
     mc_produto p
 RIGHT
     JOIN mc_categoria_prod c ON (p.cd_categoria = c.cd_categoria);
+    
+    
+-- Query abaixo retorna o nome do funcionário, cargo e valor do salário
+SELECT
+    cd_funcionario,
+    nm_funcionario,
+    ds_cargo,
+    vl_salario
+FROM
+    mc_funcionario;
+
+-- Query abaixo retorna id e nome do cliente e data de inicio, fim e status do endereco.
+SELECT
+    f.nr_cliente,
+    f.nm_cliente,
+    ef.dt_inicio,
+    ef.dt_termino,
+    ef.st_end
+FROM
+    mc_cliente f
+FULL OUTER
+    JOIN mc_end_cli ef ON (ef.nr_cliente = f.nr_cliente) ;
+
+select* FROM mc_end_CLI;
