@@ -6,7 +6,7 @@ calcula_icms = lambda valor : valor * 0.18
 
 # D)
 class ValorNaoNumericoError(Exception):
-    def __init__(self, message="Digite um valor válido\n"):
+    def __init__(self, message="Digite um valor numérico válido\n"):
         super().__init__(message)
 
 # D)
