@@ -6,7 +6,7 @@ calcula_icms = lambda valor : valor * 0.18
 
 # D)
 class ValorNaoNumericoError(Exception):
-    def __init__(self, message="Digite um valor válido\n"):
+    def __init__(self, message="Digite um valor numérico válido\n"):
         super().__init__(message)
 
 # D)
@@ -18,8 +18,8 @@ class ValorNegativoError(Exception):
 def cadastrar_produto():
     while True:
         try:
-            descricao = input("Digite a descrição do produto: ").strip()
-            if not descricao or any(char.isdigit() for char in descricao):
+            descricao = input("Digite a descrição do produto: ")
+            if not descricao or descricao.strip().lstrip('-').isdigit():
                 raise ValorNaoNumericoError()  
 
             valor = float(input("Digite o valor do produto: "))
@@ -27,8 +27,8 @@ def cadastrar_produto():
                 raise ValorNegativoError()  
  
             # Validação da embalagem
-            embalagem = input("Digite o tipo de embalagem do produto: ").strip()
-            if not embalagem or any(char.isdigit() for char in embalagem):
+            embalagem = input("Digite o tipo de embalagem do produto: ")
+            if not embalagem or embalagem.strip().lstrip('-').isdigit():
                 raise ValorNaoNumericoError()  
             break
         except ValueError:
