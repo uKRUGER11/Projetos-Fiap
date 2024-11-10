@@ -89,16 +89,12 @@ BEGIN
             dbms_output.put_line('Data de abertura do SAC: ' ||  ocorrencia.dt_abertura_sac);
             dbms_output.put_line('Hora de abertura do SAC: ' ||  ocorrencia.hr_abertura_sac);
             dbms_output.put_line('Tipo do SAC: ' ||  ocorrencia.tp_sac);
-            dbms_output.put_line('___________________________________________________________________________________________');
             dbms_output.put_line('* Tipo de classificação SAC (dado tranformado): ' ||  v_ds_tipo_classificacao_sac || '*');
-            dbms_output.put_line('___________________________________________________________________________________________');
             dbms_output.put_line('Código do Produto relacionado ao SAC: ' ||  ocorrencia.cd_produto);
             dbms_output.put_line('Nome do produto relacionado ao SAC: ' ||  ocorrencia.ds_produto);
             dbms_output.put_line('Valor unitário produto relacionado ao SAC: ' ||  ocorrencia.vl_unitario);
             dbms_output.put_line('Valor percentual de lucro do produto relacionado ao SAC: ' ||  ocorrencia.vl_perc_lucro);
-            dbms_output.put_line('___________________________________________________________________________________________');
             dbms_output.put_line('* Valor unitário de lucro do produto relacionado ao SAC: ' ||  v_vl_unitario_lucro_produto || '*');
-            dbms_output.put_line('___________________________________________________________________________________________');
             dbms_output.put_line('Número do cliente associado ao SAC: ' ||  ocorrencia.nr_cliente);
             dbms_output.put_line('Nome do Cliente associado ao SAC: ' ||  ocorrencia.nm_cliente);
             dbms_output.put_line('Sigla do estado relacionado ao cliente: ' ||  ocorrencia.sg_estado);
@@ -110,7 +106,7 @@ BEGIN
 END;
 /
 
-
+select * from mc_sgv_ocorrencia_sac;
 
 commit;
 
