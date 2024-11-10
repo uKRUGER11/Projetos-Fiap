@@ -1,30 +1,42 @@
--- a) Criação do cursor que exibe os dados que serão usados para popular a tabela mc_sgv_ocorrencia_sac
+Delete from mc_sgv_ocorrencia_sac where nr_ocorrencia_sac =1;
+set serveroutput on;
+DECLARE
+    -- Define o tipo de variável para armazenar cada linha do cursor
+    ocorrencia mc_sgv_ocorrencia_sac%ROWTYPE;
 
-declare
-    ocorrencia mc_sgv_ocorrencia_sac%rowtype;
-    v_DS_TIPO_CLASSIFICACAO_SAC varchar(30);
-    v_vl_unitario_lucro number (8,2);
+    -- Declaração do cursor
     CURSOR cr_ocor IS
-        select
+        SELECT
             sc.nr_sac, sc.dt_abertura_sac, sc.hr_abertura_sac, sc.tp_sac,
             prod.cd_produto, prod.ds_produto, prod.vl_unitario, prod.vl_perc_lucro,
             cli.nr_cliente, cli.nm_cliente, 
             cli_es.sg_estado, cli_es.nm_estado
-        from mc_sgv_sac sc                     
-        inner join mc_produto prod on (sc.cd_produto = prod.cd_produto)
-         inner join mc_cliente cli on (sc.nr_cliente = cli.nr_cliente)
-            inner join (select ed.nr_cliente, lg.cd_logradouro, br.cd_bairro,
-                               cd.cd_cidade, es.sg_estado, es.nm_estado
-                            from mc_end_cli ed
-                            inner join mc_logradouro lg on (ed.CD_LOGRADOURO_CLI = lg.CD_LOGRADOURO)
-                                inner join mc_bairro br on (lg.cd_bairro = br.cd_bairro)
-                                    inner join mc_cidade cd on (br.cd_cidade = cd.cd_cidade)
-                                        inner join mc_estado es on (cd.sg_estado = es.sg_estado)) cli_es on (cli.nr_cliente = cli_es.nr_cliente);
-                                 
-begin
-    
-    for ocorrencia in cr_ocor loop
+        FROM mc_sgv_sac sc                     
+        INNER JOIN mc_produto prod ON sc.cd_produto = prod.cd_produto
+        INNER JOIN mc_cliente cli ON sc.nr_cliente = cli.nr_cliente
+        INNER JOIN (
+            SELECT ed.nr_cliente, lg.cd_logradouro, br.cd_bairro,
+                   cd.cd_cidade, es.sg_estado, es.nm_estado
+            FROM mc_end_cli ed
+            INNER JOIN mc_logradouro lg ON ed.CD_LOGRADOURO_CLI = lg.CD_LOGRADOURO
+            INNER JOIN mc_bairro br ON lg.cd_bairro = br.cd_bairro
+            INNER JOIN mc_cidade cd ON br.cd_cidade = cd.cd_cidade
+            INNER JOIN mc_estado es ON cd.sg_estado = es.sg_estado
+        ) cli_es ON cli.nr_cliente = cli_es.nr_cliente;
         
+    -- Variável auxiliar para a classificação do SAC
+    v_ds_tipo_classificacao_sac VARCHAR2(30);
+    -- Variável para armazenar o valor do lucro unitário
+    v_vl_unitario_lucro_produto NUMBER(10, 2);
+    -- Variável para verificar duplicidade
+    v_exists NUMBER;
+    v_contador NUMBER;
+
+BEGIN
+    
+    -- Itera sobre o cursor
+    FOR ocorrencia IN cr_ocor LOOP
+        EXIT WHEN cr_ocor%notfound;
         dbms_output.put_line('Número do SAC: ' ||  ocorrencia.nr_sac);
         dbms_output.put_line('Data de abertura do SAC: ' ||  ocorrencia.dt_abertura_sac);
         dbms_output.put_line('Hora de abertura do SAC: ' ||  ocorrencia.hr_abertura_sac);
@@ -38,56 +50,65 @@ begin
         dbms_output.put_line('Sigla do estado relacionado ao cliente: ' ||  ocorrencia.sg_estado);
         dbms_output.put_line('Estado relacionado ao cliente: ' ||  ocorrencia.nm_estado);
         
-        EXIT WHEN cr_ocor%notfound;
-    -- Inserindo os dados na tabela mc_sgv_ocorrencia_sac
-        INSERT INTO mc_sgv_ocorrencia_sac (
-            nr_ocorrencia_sac, 
-            dt_abertura_sac, 
-            hr_abertura_sac, 
-            ds_tipo_classificacao_sac,
-            DS_INDICE_SATISFACAO_ATD_SAC, 
-            CD_PRODUTO, 
-            DS_PRODUTO, 
-            VL_UNITARIO_PRODUTO, 
-            VL_PERC_LUCRO,
-            VL_UNITARIO_LUCRO_PRODUTO, 
-            SG_ESTADO, 
-            NM_ESTADO, 
-            NR_CLIENTE, 
-            NM_CLIENTE,
-            VL_ICMS_PRODUTO
-        ) VALUES (
-            ocorrencia.nr_sac, 
-            ocorrencia.dt_abertura_sac, 
-            ocorrencia.hr_abertura_sac, 
-            'teste', 
-            null, 
-            ocorrencia.cd_produto, 
-            ocorrencia.ds_produto, 
-            ocorrencia.vl_unitario, 
-            v_vl_unitario_lucro, 
-            null, 
-            ocorrencia.sg_estado, 
-            ocorrencia.nm_estado,
-            ocorrencia.nr_cliente, 
-            ocorrencia.nm_cliente, 
-            null
-        );
-        END LOOP;
+       
+    
+    
+        -- Classificação do SAC
+        IF ocorrencia.tp_sac = 'S' THEN
+            v_ds_tipo_classificacao_sac := 'SUGESTÃO';
+        ELSIF ocorrencia.tp_sac = 'D' THEN
+            v_ds_tipo_classificacao_sac := 'DÚVIDA';
+        ELSIF ocorrencia.tp_sac = 'E' THEN
+            v_ds_tipo_classificacao_sac := 'ELOGIO';
+        ELSE
+            v_ds_tipo_classificacao_sac := 'CLASSIFICAÇÃO INVÁLIDA';
+        END IF;
 
-end;
+        -- Calcula o valor do lucro unitário
+        v_vl_unitario_lucro_produto := ocorrencia.vl_unitario * (ocorrencia.vl_perc_lucro / 100);
 
+        -- Verifica se o nr_ocorrencia_sac já existe na tabela
+        
+            INSERT INTO mc_sgv_ocorrencia_sac (
+                nr_ocorrencia_sac,
+                dt_abertura_sac,
+                hr_abertura_sac,
+                ds_tipo_classificacao_sac,
+                cd_produto,
+                ds_produto,
+                vl_unitario_produto,
+                vl_perc_lucro,
+                vl_unitario_lucro_produto,
+                sg_estado,
+                nm_estado,
+                nr_cliente,
+                nm_cliente,
+                vl_icms_produto -- Mantém o valor nulo
+            )
+            VALUES (
+                ocorrencia.nr_sac,
+                ocorrencia.dt_abertura_sac,
+                ocorrencia.hr_abertura_sac,
+                v_ds_tipo_classificacao_sac,
+                ocorrencia.cd_produto,
+                ocorrencia.ds_produto,
+                ocorrencia.vl_unitario,
+                ocorrencia.vl_perc_lucro,
+                v_vl_unitario_lucro_produto,
+                ocorrencia.sg_estado,
+                ocorrencia.nm_estado,
+                ocorrencia.nr_cliente,
+                ocorrencia.nm_cliente,
+                NULL -- vl_icms_produto permanece vazio
+            );
+  
+    END LOOP;
+    
+END;
+/
 
 Select * from mc_sgv_ocorrencia_sac;
 
-
-
-
-
-
-
-
-
-
+commit;
 
 
