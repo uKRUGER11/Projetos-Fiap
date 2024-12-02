@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Caminho para o arquivo CSV
-arquivo_csv = r'D:\Fase2FIAP\Projetos-Fiap\ocorrencias_sac.csv'
+arquivo_csv = r'D:\PBLFIAP\Projetos-Fiap\PBL_1_Ano_Fase4_MNGroup\ocorrencias_sac.csv'
 
 # Carregar o arquivo CSV
 df = pd.read_csv(arquivo_csv)
